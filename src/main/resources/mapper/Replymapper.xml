@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.blog.dao.ReplyDao">
+
+    <resultMap id="ReplyInfo" type="Reply">
+        <id property="id" column="id"/>
+        <result property="content" column="content"/>
+        <result property="replyDate" column="reply_date"/>
+        <result property="commentId" column="comment_id"/>
+    </resultMap>
+
+    <!-- 查询某一个评论下所有作者回复的合集 -->
+    <select id="getReplyListByCommentId" parameterType="java.lang.Integer" resultMap="ReplyInfo">
+        select id, content, reply_date from reply where comment_id = #{comment_id}
+    </select>
+
+    <!-- 增加回复 -->
+    <select id="addReply" parameterType="com.blog.pojo.Reply">
+        insert into reply (content, reply_date, comment_id)
+        values (#{content}, now(), #{commentId})
+    </select>
+
+    <!-- 获取分页查询总数 -->
+    <select id="selectCount" resultType="java.lang.Integer">
+        select count(*) from reply;
+    </select>
+
+    <!-- 根据分页的 start 和 end 查询数据 -->
+    <select id="getReplyByPage" parameterType="Map" resultMap="ReplyInfo">
+        select id, content, reply_date, comment_id from reply
+        <if test="start!=null and size!=null">
+            limit #{start},#{size}
+        </if>
+    </select>
+
+    <!-- 根据评论 id 查询博客 title -->
+    <select id="getBlogTitleByReplyId" parameterType="java.lang.Integer" resultType="java.lang.String">
+        select title from blog where id =
+        (select blog_id from comment where id =
+        (select comment_id from reply where id = #{id}))
+    </select>
+
+    <!-- 根据评论 id 查询博客 id-->
+    <select id="getBlogIdByReplyId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select blog_id from comment where id = (select comment_id from reply where id = #{id})
+    </select>
+
+    <!-- 根据回复 id 删除回复-->
+    <select id="deleteReplyById" parameterType="java.lang.Integer">
+        delete from reply where id = #{id}
+    </select>
+
+    <!-- 获取所有回复 -->
+    <select id="getAllReply" resultMap="ReplyInfo">
+        select id, content, reply_date, comment_id from reply
+    </select>
+
+</mapper>

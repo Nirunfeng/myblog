@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.blog.dao.BlogTypeDao">
+    <resultMap id="AllTypeName" type="BlogType">
+        <id property="id" column="id"/>
+        <result property="typeName" column="type_name"/>
+        <result property="orderNum" column="order_num"/>
+    </resultMap>
+
+    <!-- 根据 id 获得类型名 -->
+    <select id="getTypeNameById" parameterType="int" resultType="java.lang.String">
+        select type_name from blogtype where id = #{id}
+    </select>
+
+    <!-- 获取所有类型名 -->
+    <select id="getAllTypes" resultMap="AllTypeName">
+        select id, type_name, order_num from blogtype
+    </select>
+
+    <!-- 添加博客类型 -->
+    <insert id="addBlogType" parameterType="com.blog.pojo.BlogType">
+        insert into blogtype (type_name, order_num)
+        values(#{typeName}, #{orderNum})
+    </insert>
+
+    <!-- 获取该类型下所有博客 id -->
+    <select id="getBlogIdListByTypeId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select id from blog where blogTypeId = #{id}
+    </select>
+
+    <!-- 根据博客 id 删除对应评论 -->
+    <select id="deleteCommentByBlogId" parameterType="java.lang.Integer">
+        delete from comment where blog_id = #{id}
+    </select>
+
+    <!-- 根据类型 id 值删除对应博客 -->
+    <delete id="deleteBlogByTypeId" parameterType="java.lang.Integer">
+        delete from blog where blogTypeId = #{id}
+    </delete>
+
+    <!-- 根据 id 删除博客类型 -->
+    <delete id="deleteBlogTypeById" parameterType="java.lang.Integer">
+        delete from blogtype where id = #{id}
+    </delete>
+
+    <!-- 根据类型名获取类型 id -->
+    <select id="getIdByTypeName" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select id from blogtype where type_name = #{typeName}
+    </select>
+
+    <!-- 更新博客类型 -->
+    <update id="updateBlogType" parameterType="com.blog.pojo.BlogType">
+        update blogtype
+        set type_name = #{typeName},
+        order_num = #{orderNum}
+        where id = #{id}
+    </update>
+</mapper>

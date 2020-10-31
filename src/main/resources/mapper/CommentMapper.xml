@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.blog.dao.CommentDao">
+    <resultMap id="CommentInfo" type="Comment">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="email" column="email"/>
+        <result property="content" column="content"/>
+        <result property="commentDate" column="comment_date"/>
+        <result property="blog_id" column="blog_id"/>
+    </resultMap>
+
+    <!-- 根据 id 查询 comment-->
+    <select id="getCommentByBlogId" resultMap="CommentInfo">
+        select id, name, email, content, comment_date, blog_id
+        from comment
+        where blog_id = #{blog_id}
+    </select>
+
+    <!-- 保存comment -->
+    <insert id="saveComment" parameterType="Comment">
+        insert into comment
+        (name, email, content, comment_date, blog_id)
+        values(#{name}, #{email}, #{content}, now(), #{blog_id})
+    </insert>
+
+    <!-- 更新评论次数 -->
+    <select id="updateCommentHit" parameterType="int">
+        update blog set commentHit = commentHit + 1 where id = #{blog_id}
+    </select>
+
+    <!-- 查询所有评论 -->
+    <select id="getAllComment" resultMap="CommentInfo">
+        select id, name, email, content, comment_date, blog_id from comment
+    </select>
+
+    <!-- 根据博客 id 查询博客名称-->
+    <select id="getTitleByBlogId" parameterType="java.lang.Integer" resultType="java.lang.String">
+        select title from blog where id = #{id}
+    </select>
+
+    <!-- 获取分页查询总数 -->
+    <select id="selectCount" resultType="java.lang.Integer">
+        select count(*) from comment;
+    </select>
+
+    <!-- 根据分页的 start 和 end 查询数据 -->
+    <select id="getCommentByPage" parameterType="Map" resultMap="CommentInfo">
+        select id, name, email, content, comment_date, blog_id from comment
+        <if test="start!=null and size!=null">
+            limit #{start},#{size}
+        </if>
+    </select>
+
+    <!-- 根据 id 获得评论者的邮件 -->
+    <select id="getEmailByCommentId" parameterType="java.lang.Integer" resultType="java.lang.String">
+        select email from comment where id = #{id}
+    </select>
+
+    <!-- 根据 id 删除评论 -->
+    <select id="deleteCommentById" parameterType="java.lang.Integer">
+        delete from comment where id = #{id}
+    </select>
+
+    <!-- 根据评论 id 获得博文 id -->
+    <select id="getBlogIdByCommentId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select blog_id from comment where id = #{id}
+    </select>
+
+    <!-- 减少评论次数 -->
+    <select id="minusCommentHit" parameterType="java.lang.Integer">
+        update blog set commentHit = commentHit - 1 where id = #{blog_id}
+    </select>
+</mapper>

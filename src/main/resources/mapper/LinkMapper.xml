@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.blog.dao.LinkDao">
+    <resultMap id="LinkInfo" type="com.blog.pojo.Link">
+        <id property="id" column="id"/>
+        <result property="linkName" column="link_name"/>
+        <result property="linkUrl" column="link_url"/>
+        <result property="orderNum" column="order_num"/>
+    </resultMap>
+
+    <select id="getAllLink" resultMap="LinkInfo">
+        select id, link_name, link_url, order_num from link
+    </select>
+
+    <!-- 获取分页查询总数 -->
+    <select id="selectCount" resultType="java.lang.Integer">
+        select count(*) from link;
+    </select>
+
+    <!-- 根据分页的 start 和 end 查询数据 -->
+    <select id="getLinkByPage" parameterType="Map" resultMap="LinkInfo">
+        select id, link_name, link_url, order_num from link
+        <if test="start!=null and size!=null">
+            limit #{start},#{size}
+        </if>
+    </select>
+
+    <!-- 增加链接 -->
+    <insert id="addLink" parameterType="com.blog.pojo.Link">
+        insert into link (link_name, link_url, order_num)
+        values(#{linkName}, #{linkUrl}, #{orderNum})
+    </insert>
+
+    <!-- 根据 id 删除链接 -->
+    <select id="deleteLinkById" parameterType="java.lang.Integer">
+        delete from link where id = #{id}
+    </select>
+
+    <!-- 更新链接 -->
+    <update id="updateLink" parameterType="com.blog.pojo.Link">
+        update link
+        set link_name = #{linkName},
+        link_url = #{linkUrl},
+        order_num = #{orderNum}
+        where id = #{id}
+    </update>
+</mapper>

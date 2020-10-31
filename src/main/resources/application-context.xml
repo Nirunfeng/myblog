@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-4.3.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+    <!--开启注解扫描-->
+    <context:component-scan base-package="com.blog"/>
+
+    <!-- 配置druid数据源 -->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="username" value="root"/>
+        <property name="password" value="123456"/>
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/blog?userUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=true&amp;serverTimezone = GMT"/>
+    </bean>
+
+    <!-- 配置mybatis的sqlSessionFactory -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="mapperLocations" value="classpath:mapper/*.xml"/>
+        <property name="configLocation" value="classpath:spring-mybatis.xml"/>
+    </bean>
+
+    <!-- 配置mybatis dao接口扫描-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.blog.dao"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+    </bean>
+
+    <!-- 国际化配置 -->
+    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basename" value="classpath:message/message"/>
+        <property name="useCodeAsDefaultMessage" value="true"/>
+    </bean>
+
+    <mvc:interceptors>
+        <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"/>
+    </mvc:interceptors>
+
+    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver"/>
+
+    <!-- shiro -->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/><!--登录页面，-->
+        <property name="loginUrl" value="../back/login.jsp"/>
+        <property name="filterChainDefinitions">
+            <value>
+                /admin/**=authc
+                /**= anon
+            </value>
+        </property>
+    </bean>
+
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="bloggerRealm"/>
+    </bean>
+
+    <!-- 自定义Realm -->
+    <bean id="bloggerRealm" class="com.blog.realm.BloggerRealm">
+        <!-- 定义凭证匹配器 -->
+        <property name="credentialsMatcher" ref="credentialsMatcher"/>
+    </bean>
+
+    <bean id="credentialsMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+        <!-- 加密算法名称 -->
+        <property name="hashAlgorithmName" value="MD5"/>
+    </bean>
+</beans>

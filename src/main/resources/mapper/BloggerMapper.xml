@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blog.dao.BloggerDao">
+    <resultMap id="Blogger" type="Blogger">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="hint" column="hint"/>
+    </resultMap>
+
+    <resultMap id="BloggerInfo" type="Blogger">
+        <result property="username" column="username"/>
+        <result property="email" column="email"/>
+        <result property="address" column="address"/>
+        <result property="phone" column="phone"/>
+    </resultMap>
+
+    <select id="getLoginInfo" resultMap="Blogger">
+        select username, password, hint from blogger where id = 1
+    </select>
+
+    <select id="getBloggerEmail" resultType="java.lang.String">
+        select email from blogger where id = 1
+    </select>
+
+    <select id="getBloggerByUsername" parameterType="java.lang.String" resultMap="Blogger">
+        select username, password from blogger where username = #{username}
+    </select>
+
+    <select id="getBloggerInfo" resultMap="BloggerInfo">
+        select username, email, address, phone from blogger where id = 1
+    </select>
+
+    <select id="updateBloggerInfo" parameterType="com.blog.pojo.Blogger">
+        update blogger
+        set username = #{username},
+        address = #{address},
+        phone = #{phone}
+        where id  = 1
+    </select>
+
+    <!--添加博主信息-->
+    <insert id="insertBlogger" parameterType="com.blog.pojo.Blogger">
+        insert into blogger (username,password,email,hint,address,phone)
+        values (#{username},#{password},'',#{hint},'','')
+    </insert>
+</mapper>

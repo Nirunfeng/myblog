@@ -1,0 +1,131 @@
+﻿
+/* =============================================================
+   GENERAL STYLES
+ ============================================================ */
+@import url(http://fonts.googleapis.com/css?family=Montserrat);
+body {
+    font-family: 'Montserrat', sans-serif;
+    line-height:30px;
+    color:rgb(39, 38, 38);
+    
+}
+.head-line {
+    padding-top:50px;
+    font-size:40px;
+    font-weight:900;
+    padding-bottom:30px;
+}
+
+/* =============================================================
+   HEADER STYLES
+ ============================================================ */
+#header {
+    background-color: #0C739B;
+     background: url(../img/1.jpg) no-repeat center center;
+    padding: 0;
+    -webkit-background-size: cover;
+    background-size: cover;
+    -moz-background-size: cover;
+    color:#E2E2E2;
+}
+ #header .overlay {
+        background-color:rgba(2, 2, 2, 0.56);
+        min-height:250px;
+    }
+.logo-div {
+    line-height:23px;
+}
+
+.logo-inner {
+    font-size: 30px;
+    font-weight: 900;
+    padding: 60px 20px 50px 20px;
+    text-align: center;
+    line-height: 23px;
+}
+
+.logo-name img {
+    height:150px;
+    width:150px;
+}
+.logo-inner span {
+    display: block;
+}
+
+.logo-name a, .logo-name a:hover {
+    color: rgba(147, 209, 234, 1);
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.header-text-top {
+padding: 50px 30px 40px 30px;
+line-height: 30px;
+font-weight: 900;
+}
+
+    .header-text-top a, .header-text-top a:hover {
+        text-decoration: none;
+    }
+
+
+   
+ /* =============================================================
+   INFO SECTION STYLES
+ ============================================================ */
+
+.info-sec {
+    background-color: #000000;
+padding: 20px 50px 10px 50px;
+color: #FFFFFF;
+}
+.social-link a, .social-link a:hover {
+    text-decoration:none;
+    margin-right:10px;
+}
+
+ /* =============================================================
+  BLOG POST STYLE
+ ============================================================ */
+.blog-post {
+    padding-bottom:30px;
+    border-bottom:2px solid #f4f4f4;
+    padding-top:30px;
+}
+    .blog-post a, .blog-post a:hover {
+        text-decoration:none;
+    }
+.blog-post h1 {
+    font-size:30px;
+    line-height:50px;
+}
+.blog-post h4 {
+    font-size:20px;
+    line-height:25px;
+}
+.blog-post p {
+     font-size:20px;
+    line-height:30px;
+    padding-bottom:20px;
+    padding-top:10px;
+}
+.copyrights{
+	text-indent:-9999px;
+	height:0;
+	line-height:0;
+	font-size:0;
+	overflow:hidden;
+}
+ /* =============================================================
+   FOOTER SECTION STYLES
+ ============================================================ */
+.footer-sec {
+    background-color:#000000;
+     margin-top:50px;
+}
+.foo-inner {
+    text-align:right;
+    padding:20px 30px;
+    color:#fff;
+   
+}
