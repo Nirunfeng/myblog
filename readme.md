@@ -20,4 +20,8 @@
 ![img.png](images/3.png)
 - 运行程序，访问localhost:8080即可查看页面，如图所示
 - 演示登录的账号密码均为admin
+
 ![img.png](images/img.png)
+## Star
+[![Stargazers repo roster for @Nirunfeng/myblog](https://reporoster.com/stars/Nirunfeng/myblog)](https://github.com/Nirunfeng/myblog/stargazers)
+
